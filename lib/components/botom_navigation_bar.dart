@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/enums.dart';
@@ -17,7 +16,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color inActiveIconColor=Colors.black26;
+    const Color inActiveIconColor=Colors.black26;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
@@ -39,20 +38,19 @@ class CustomBottomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainHomeScreen()  ),
-              );
+
+              Navigator.of(context)
+                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  MainHomeScreen()), (Route<dynamic> route) => false);
             },
                 icon: SvgPicture.asset("assets/icons/bar_home_icon.svg",
                   color: MenuState.home==selectedMenu
                       ?kPrimaryColor
                       :inActiveIconColor,)),
             IconButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => OrderScreen() ),
-              );
+              Navigator.of(context)
+                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  OrderScreen()), (Route<dynamic> route) => false);
 
             }, icon:
             SvgPicture.asset("assets/icons/cart_beg.svg",
@@ -60,10 +58,9 @@ class CustomBottomNavBar extends StatelessWidget {
                   ?kPrimaryColor
                   :inActiveIconColor,)),
             IconButton(onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen() ),
-              );
+              Navigator.of(context)
+                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  ProfileScreen()), (Route<dynamic> route) => false);
             },
                 icon: SvgPicture.asset("assets/icons/bar_profile_icon.svg",
                   color: MenuState.profile==selectedMenu

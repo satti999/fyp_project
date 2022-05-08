@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/model/Product.dart';
+import 'package:shop_app/model/product_model.dart';
 import 'package:shop_app/screens/details/components/body.dart';
 import 'package:shop_app/screens/home/home_screem.dart';
 class DetailsScreen extends StatelessWidget {
-  final Product product;
+  final ProductModel product;
 
   const DetailsScreen({Key key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // each product have a color
-      backgroundColor: product.color,
+      // backgroundColor: product.color,
       appBar: buildAppBar(context),
       body: Body(product: product),
     );
@@ -20,15 +22,15 @@ class DetailsScreen extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
+      backgroundColor: kPrimaryColor,
       title: const  Text("Details"),
       centerTitle: true,
-      backgroundColor: product.color,
+      // backgroundColor: product.color,
       elevation: 0,
       leading: IconButton(
         onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen() ),
+          Navigator.pop(
+            context
           );
         },
         icon: SvgPicture.asset("assets/icons/Back ICon.svg",color: Colors.white,),

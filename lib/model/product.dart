@@ -1,13 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class Product extends Equatable {
   final String image, title, description, size;
   final int price, id;
-  final Color color;
+   Color color;
+  final String colors;
+
   Product({
     this.id,
     this.image,
@@ -16,25 +15,37 @@ class Product extends Equatable {
     this.description,
     this.size,
     this.color,
+    this.colors,
   });
 
   @override
   List<Object> get props => [id, image, title, price, description, size, color];
-  static Product fromSnapshot(DocumentSnapshot snap) {
-    Product products = Product();
-  }
+
+  // static Product fromSnapshot(DocumentSnapshot snap) {
+  //   Product products = Product();
+  // }
+  Product.fromMap(data)
+      : id = data['id'],
+        description = data['description'],
+        title = data['title'],
+        price = data['price'],
+        size = data['size'],
+        colors = data['colors'],
+        image = data['image'];
+
 }
 
 class Category extends Equatable {
   final String name;
   final String imageUrl;
+
   Category({this.name, this.imageUrl});
 
   @override
   List<Object> get props => [name, imageUrl];
-  static Category fromSnapshot(DocumentSnapshot snap) {
-    Category category = Category();
-  }
+// static Category fromSnapshot(DocumentSnapshot snap) {
+//   Category category = Category();
+// }
 }
 
 List<Product> products = [

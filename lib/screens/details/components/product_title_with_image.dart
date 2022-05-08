@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/model/Product.dart';
+import 'package:shop_app/model/product_model.dart';
 
 import '../../../constants.dart';
 
@@ -9,7 +10,7 @@ class ProductTitleWithImage extends StatelessWidget {
     @required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -18,40 +19,46 @@ class ProductTitleWithImage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-         const Text(
-            "Shirt Category",
-            style: TextStyle(color: Colors.white),
-          ),
+
           Text(
-            product.title,
+            product.name,
             style: Theme.of(context)
                 .textTheme
                 .headline4
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-           SizedBox(height: 1),
+          SizedBox(height: 1),
           Row(
             children: <Widget>[
               RichText(
                 text: TextSpan(
                   children: [
-                   const TextSpan(text: "Price\n"),
+                    const TextSpan(text: "Price\n"),
                     TextSpan(
                       text: "\$${product.price}",
                       style: Theme.of(context).textTheme.headline4.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
-             const SizedBox(width: 15),
+              const SizedBox(width: 15),
               Expanded(
-                child: Hero(
-                  tag: "${product.id}",
-                  child: Image.asset(
-                    product.image,
-                    fit: BoxFit.fill,
-                  ),
+                child: AspectRatio(
+                  aspectRatio: 1/1,
+                  child: Hero(
+                      tag: "${product.id}",
+                      child: product.image != null
+                          ? Image.network(
+                              IMAGESURL + product.image.toString().split(',')[0],
+                              fit: BoxFit.contain)
+                          : Text("No image")
+
+                      // Image.asset(
+                      //   product.image,
+                      //   fit: BoxFit.fill,
+                      // ),
+                      ),
                 ),
               )
             ],

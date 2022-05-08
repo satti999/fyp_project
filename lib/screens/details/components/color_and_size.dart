@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shop_app/model/Product.dart';
+import 'package:shop_app/model/product_model.dart';
 import 'package:shop_app/screens/details/components/select_size.dart';
 
 import '../../../constants.dart';
@@ -12,7 +13,7 @@ class ColorAndSize extends StatelessWidget {
     @required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +26,7 @@ class ColorAndSize extends StatelessWidget {
               Text("Color"),
               Row(
                 children: <Widget>[
-                  ColorDot(
-                    color: product.color,
-                    isSelected: true,
-                  ),
+                  product.colors!=null ?Text(product.colors):Text(''),
                   ColorDot(color: Color(0xFFF8C078)),
                   ColorDot(color: Color(0xFFA29B9B)),
                 ],
