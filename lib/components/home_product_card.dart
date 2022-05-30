@@ -77,9 +77,8 @@ class _ProductCardState extends State<ProductCard> {
                         setState(() {
                           cartLoading=true;
                         });
-                        var res=await CartService().addToCart({
+                        var res=await CartService().addToWishlist({
                           "product_id":widget.product.id,
-                          "quantity":1
                         });
                         SnackBarService().showSnackBar(context, res.toString());
 
@@ -113,7 +112,7 @@ class _ProductCardState extends State<ProductCard> {
                       child:cartLoading? CircularProgressIndicator(
                         color: Colors.white,
                       ) : SvgPicture.asset(
-                        "assets/icons/shopping_cart.svg",
+                        "assets/icons/Heart Icon_2.svg",
                       ),
 
                     ),

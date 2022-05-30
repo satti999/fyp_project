@@ -22,6 +22,19 @@ class CartService{
     }
   }
 
+  addToWishlist(id)async {
+
+    try{
+      var response = await dio.post('addtoWishLists',data: {
+        "wishlist_id":id
+      });
+      return response.data['message'];
+    }
+    catch(er){
+      print("wishlist add $er");
+      throw er;
+    }
+  }
   updateCartProduct(cart)async{
     try{
       print(cart);

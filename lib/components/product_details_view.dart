@@ -17,6 +17,7 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage>
     with TickerProviderStateMixin {
+  int quan = 1;
   bool _isloading = false;
   AnimationController controller;
   Animation<double> animation;
@@ -25,7 +26,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   List<bool> tmp;
   String size_id;
-  
+
   @override
   void initState() {
     super.initState();
@@ -247,16 +248,22 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                 SizedBox(
                   height: 20,
                 ),
-                 widget.product.size!=null && childs.isNotEmpty ? Row(
-                  children: [
-                    const Text("Size"),
-                    sizeSelector(),
-                  ],
-                ):Text(''),
+                widget.product.size != null && childs.isNotEmpty
+                    ? Row(
+                        children: [
+                          const Text("Size"),
+                          sizeSelector(),
+                        ],
+                      )
+                    : Text(''),
                 SizedBox(
                   height: 20,
                 ),
                 _description(),
+                SizedBox(
+                  height: 20,
+                ),
+                _quanBtns()
               ],
             ),
           ),
@@ -284,12 +291,11 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             for (int buttonIndex = 0; buttonIndex < tmp.length; buttonIndex++) {
               if (buttonIndex == index) {
                 tmp[buttonIndex] = true;
-                size_id=childs[buttonIndex];
+                size_id = childs[buttonIndex];
               } else {
                 tmp[buttonIndex] = false;
               }
             }
-
           });
         },
         isSelected: tmp,
@@ -372,6 +378,30 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     );
   }
 
+  Widget _quanBtns() {
+    return Row(
+      children: [
+        IconButton(
+            onPressed: () {
+              setState(() {
+                if (quan > 1) {
+                  quan--;
+                }
+              });
+            },
+            icon: Icon(Icons.remove)),
+        Text("$quan"),
+        IconButton(
+            onPressed: () {
+              setState(() {
+                quan++;
+              });
+            },
+            icon: Icon(Icons.add))
+      ],
+    );
+  }
+
   Widget _colorWidget(Color color, {bool isSelected = false}) {
     return CircleAvatar(
       radius: 12,
@@ -408,14 +438,20 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           ? null
           : () async {
               try {
-                if(widget.product.size!=null && childs.isNotEmpty && size_id==null){
+                if (widget.product.size != null &&
+                    childs.isNotEmpty &&
+                    size_id == null) {
                   throw "Must select size";
                 }
                 setState(() {
                   _isloading = true;
                 });
-                var res = await CartService().addToCart(
-                    {"product_id": widget.product.id, "quantity": 1,"size_id":size_id});
+                var res = await CartService().addToCart({
+                  "product_id": widget.product.id,
+                  "quantity": quan,
+                  "size_id": size_id,
+                  "vendor_id": widget.product.vendor_id
+                });
                 SnackBarService().showSnackBar(context, res.toString());
               } catch (Err) {
                 SnackBarService().showSnackBar(context, Err.toString());
@@ -437,7 +473,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       floatingActionButton: _flotingButton(),
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               gradient: LinearGradient(
             colors: [
               Color(0xfffbfbfb),
