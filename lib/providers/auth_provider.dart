@@ -68,13 +68,6 @@ bool _isLoggedIn=false;
     loading=false;
   }
 
-  getUserProfile(){
-    try {
-      // await  _authService.registerUser(name, email, phone, password);
-    }
-    catch(err){
-      rethrow;
-    }
-  }
+
 
 }

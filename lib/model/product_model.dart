@@ -27,6 +27,7 @@ class ProductModel {
   String image;
   String size;
   String colors;
+  int stock;
   int vendor_id;
 
   ProductModel(
@@ -37,6 +38,7 @@ class ProductModel {
       this.image,
       this.size,
       this.colors,
+        this.stock,
       this.description,
       this.vendor_id});
 
@@ -50,6 +52,7 @@ class ProductModel {
       "colors": product.colors,
       "size": product.size,
       "image": product.image,
+      "stock": product.stock,
       "vendor_id": product.vendor_id
     };
     return res;
@@ -64,5 +67,6 @@ class ProductModel {
         price = data['price'],
         colors = data['colors'],
         vendor_id = data['vendor_id'],
+        stock = data['stock'],
         size = data['size'];
 }

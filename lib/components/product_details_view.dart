@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/model/product_model.dart';
+import 'package:shop_app/screens/details/components/select_size.dart';
 import 'package:shop_app/services/cart_service.dart';
 import 'package:shop_app/services/snackbar_service.dart';
 
 class ProductDetailPage extends StatefulWidget {
   ProductModel product;
-  ProductDetailPage({Key key,this.product}) : super(key: key);
+
+  ProductDetailPage({Key key, this.product}) : super(key: key);
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -15,11 +17,15 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage>
     with TickerProviderStateMixin {
-  bool _isloading=false;
+  bool _isloading = false;
   AnimationController controller;
   Animation<double> animation;
 
+  List<String> childs;
 
+  List<bool> tmp;
+  String size_id;
+  
   @override
   void initState() {
     super.initState();
@@ -28,6 +34,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     animation = Tween<double>(begin: 0, end: 1).animate(
         CurvedAnimation(parent: controller, curve: Curves.easeInToLinear));
     controller.forward();
+    childs = widget.product.size.toString().split(",").toList();
+    tmp = List.generate(childs.length, (index) => false);
   }
 
   @override
@@ -37,9 +45,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   }
 
   bool isLiked = true;
+
   Widget _appBar() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -60,13 +69,13 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   }
 
   Widget _icon(
-      IconData icon, {
-        Color color = kPrimaryColor,
-        double size = 20,
-        double padding = 10,
-        bool isOutLine = false,
-        Function onPressed,
-      }) {
+    IconData icon, {
+    Color color = kPrimaryColor,
+    double size = 20,
+    double padding = 10,
+    bool isOutLine = false,
+    Function onPressed,
+  }) {
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -79,8 +88,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               color: kPrimaryColor,
               style: isOutLine ? BorderStyle.solid : BorderStyle.none),
           borderRadius: BorderRadius.all(Radius.circular(13)),
-          color:
-          isOutLine ? Colors.transparent : Theme.of(context).backgroundColor,
+          color: isOutLine
+              ? Colors.transparent
+              : Theme.of(context).backgroundColor,
           boxShadow: <BoxShadow>[
             BoxShadow(
                 color: Color(0xfff8f8f8),
@@ -108,13 +118,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
-            Text(
-              "AIP",
-              style: TextStyle(
-              fontSize: 160,
-              color: Colors.black26)
-            ),
-            Image.network("$IMAGESURL${widget.product.image.toString().split(',')[0]}")
+            Text("AIP", style: TextStyle(fontSize: 160, color: Colors.black26)),
+            Image.network(
+                "$IMAGESURL${widget.product.image.toString().split(',')[0]}")
           ],
         ),
       ),
@@ -129,9 +135,11 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
-          children:
-
-          widget.product.image.toString().split(',').map((x) => _thumbnail(x)).toList()),
+          children: widget.product.image
+              .toString()
+              .split(',')
+              .map((x) => _thumbnail(x))
+              .toList()),
     );
   }
 
@@ -169,7 +177,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       minChildSize: .53,
       builder: (context, scrollController) {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(40),
@@ -199,28 +207,27 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("${widget.product.name}",style: TextStyle( fontSize: 25)),
+                      Text("${widget.product.name}",
+                          style: TextStyle(fontSize: 25)),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Text("\$",style: TextStyle( fontSize: 18,color: Colors.red)),
-                              Text("${widget.product.price}",style: TextStyle( fontSize: 25)),
-
+                              Text("\$",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.red)),
+                              Text("${widget.product.price}",
+                                  style: TextStyle(fontSize: 25)),
                             ],
                           ),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.star,
-                                  color: Colors.yellow, size: 17),
-                              Icon(Icons.star,
-                                  color: Colors.yellow, size: 17),
-                              Icon(Icons.star,
-                                  color: Colors.yellow, size: 17),
-                              Icon(Icons.star,
-                                  color: Colors.yellow, size: 17),
+                              Icon(Icons.star, color: Colors.yellow, size: 17),
+                              Icon(Icons.star, color: Colors.yellow, size: 17),
+                              Icon(Icons.star, color: Colors.yellow, size: 17),
+                              Icon(Icons.star, color: Colors.yellow, size: 17),
                               Icon(Icons.star_border, size: 17),
                             ],
                           ),
@@ -240,6 +247,15 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                 SizedBox(
                   height: 20,
                 ),
+                 widget.product.size!=null && childs.isNotEmpty ? Row(
+                  children: [
+                    const Text("Size"),
+                    sizeSelector(),
+                  ],
+                ):Text(''),
+                SizedBox(
+                  height: 20,
+                ),
                 _description(),
               ],
             ),
@@ -247,6 +263,37 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         );
       },
     );
+  }
+
+  Widget singleSizeWidget(String text) {
+    return Container(
+      height: 35,
+      width: 35,
+      color: const Color(0xfff2f2f2),
+      child: Center(child: Text(text)),
+    );
+  }
+
+  Widget sizeSelector() {
+    return ToggleButtons(
+        selectedColor: kPrimaryColor,
+        fillColor: kPrimaryColor,
+        renderBorder: false,
+        onPressed: (int index) {
+          setState(() {
+            for (int buttonIndex = 0; buttonIndex < tmp.length; buttonIndex++) {
+              if (buttonIndex == index) {
+                tmp[buttonIndex] = true;
+                size_id=childs[buttonIndex];
+              } else {
+                tmp[buttonIndex] = false;
+              }
+            }
+
+          });
+        },
+        isSelected: tmp,
+        children: childs.map((e) => singleSizeWidget(e)).toList());
   }
 
   Widget _availableSize() {
@@ -257,7 +304,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
           "Available Size",
           style: TextStyle(
             fontSize: 14,
-
           ),
         ),
         SizedBox(height: 20),
@@ -282,17 +328,14 @@ class _ProductDetailPageState extends State<ProductDetailPage>
             color: Colors.blue,
             style: !isSelected ? BorderStyle.solid : BorderStyle.none),
         borderRadius: BorderRadius.all(Radius.circular(13)),
-        color:
-        isSelected ? Colors.orange : Theme.of(context).backgroundColor,
+        color: isSelected ? Colors.orange : Theme.of(context).backgroundColor,
       ),
-
       child: Text(
         text,
         style: TextStyle(
           fontSize: 16,
           color: isSelected ? Colors.yellow : Colors.black,
         ),
-
       ),
     );
   }
@@ -301,8 +344,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Available Size",style: TextStyle( fontSize: 14)),
-
+        Text("Available Size", style: TextStyle(fontSize: 14)),
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -336,10 +378,10 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       backgroundColor: color.withAlpha(150),
       child: isSelected
           ? Icon(
-        Icons.check_circle,
-        color: color,
-        size: 18,
-      )
+              Icons.check_circle,
+              color: color,
+              size: 18,
+            )
           : CircleAvatar(radius: 7, backgroundColor: color),
     );
   }
@@ -349,7 +391,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-           "Description",
+          "Description",
           style: TextStyle(
             fontSize: 14,
           ),
@@ -362,28 +404,27 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   FloatingActionButton _flotingButton() {
     return FloatingActionButton(
-      onPressed:_isloading
+      onPressed: _isloading
           ? null
           : () async {
-        try {
-          setState(() {
-            _isloading = true;
-          });
-          var res = await CartService().addToCart({
-            "product_id": widget.product.id,
-            "quantity": 1
-          });
-          SnackBarService()
-              .showSnackBar(context, res.toString());
-        } catch (Err) {
-          SnackBarService()
-              .showSnackBar(context, Err.toString());
-        } finally {
-          setState(() {
-            _isloading = false;
-          });
-        }
-      },
+              try {
+                if(widget.product.size!=null && childs.isNotEmpty && size_id==null){
+                  throw "Must select size";
+                }
+                setState(() {
+                  _isloading = true;
+                });
+                var res = await CartService().addToCart(
+                    {"product_id": widget.product.id, "quantity": 1,"size_id":size_id});
+                SnackBarService().showSnackBar(context, res.toString());
+              } catch (Err) {
+                SnackBarService().showSnackBar(context, Err.toString());
+              } finally {
+                setState(() {
+                  _isloading = false;
+                });
+              }
+            },
       backgroundColor: Colors.orange,
       child: Icon(Icons.shopping_basket,
           color: Theme.of(context).floatingActionButtonTheme.backgroundColor),
@@ -398,13 +439,13 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         child: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color(0xfffbfbfb),
-                  Color(0xfff7f7f7),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              )),
+            colors: [
+              Color(0xfffbfbfb),
+              Color(0xfff7f7f7),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          )),
           child: Stack(
             children: <Widget>[
               Column(

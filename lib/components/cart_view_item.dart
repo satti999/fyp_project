@@ -7,8 +7,9 @@ import '../constants.dart';
 
 class CartViewItem extends StatefulWidget {
   CartViewItemModel cartViewItem;
+  var quantityHandler;
 
-  CartViewItem({Key key, this.cartViewItem}) : super(key: key);
+  CartViewItem({Key key, this.cartViewItem,this.quantityHandler}) : super(key: key);
 
   @override
   _CartViewItemState createState() => _CartViewItemState();
@@ -65,7 +66,7 @@ class _CartViewItemState extends State<CartViewItem> {
                                     if(widget.cartViewItem.quantity > 1){
                                       int quan = widget.cartViewItem.quantity;
                                       quan--;
-                                      updateQuantity(quan);
+                                     widget.quantityHandler(quan);
                                     }
 
                                     // try{
@@ -96,7 +97,7 @@ class _CartViewItemState extends State<CartViewItem> {
                                   onPressed: () {
                                     int quan = widget.cartViewItem.quantity;
                                     quan++;
-                                    updateQuantity(quan);
+                                    widget.quantityHandler(quan);
                                     // setState(() {
                                     //   widget.cartViewItem.quantity--;
                                     //

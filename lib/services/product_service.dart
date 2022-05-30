@@ -19,6 +19,7 @@ var dio=createDio();
     try{
       var response=await  dio.get("products");
       var res = response.data['data'] as List;
+      print(res);
       return res.map((prod) => ProductModel.fromMap(prod)).toList();
 
       // return ProductModel.fromMap(res[0]);

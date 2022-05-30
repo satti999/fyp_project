@@ -1,3 +1,4 @@
+import 'package:shop_app/model/cart_model.dart';
 import 'package:shop_app/model/cart_view_item_model.dart';
 
 import 'api_service.dart';
@@ -5,14 +6,15 @@ import 'api_service.dart';
 class CartService{
   final dio = createDio();
 
-  Future<List<CartViewItemModel>> getCartProducts()async{
+  Future<CartModel> getCartProducts()async{
     try{
 
       var response = await dio.get('view-cart');
       print (response.data);
-      var resp=response.data['cart_items'] as List;
-      List<CartViewItemModel> cartItems= resp.map((cartItemData) => CartViewItemModel.fromMap(cartItemData)).toList();
-      return cartItems;
+      return CartModel.fromMap(response.data);
+      // var resp=response.data['cart_items'] as List;
+      // List<CartViewItemModel> cartItems= resp.map((cartItemData) => CartViewItemModel.fromMap(cartItemData)).toList();
+      // return cartItems;
     }
     catch(er){
       print("cart service $er");

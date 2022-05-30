@@ -116,15 +116,21 @@ class _ProductSingleViewState extends State<ProductSingleView> {
                         ? null
                         : () async {
                             try {
-                              setState(() {
-                                _isloading = true;
-                              });
-                              var res = await CartService().addToCart({
-                                "product_id": widget.product.id,
-                                "quantity": quan
-                              });
-                              SnackBarService()
-                                  .showSnackBar(context, res.toString());
+                              if(widget.product.stock > 0) {
+                                setState(() {
+                                  _isloading = true;
+                                });
+                                var res = await CartService().addToCart({
+                                  "product_id": widget.product.id,
+                                  "quantity": quan
+                                });
+                                SnackBarService()
+                                    .showSnackBar(context, res.toString());
+                              }
+                              else{
+                                SnackBarService()
+                                    .showSnackBar(context, "Product out of stock");
+                              }
                             } catch (Err) {
                               SnackBarService()
                                   .showSnackBar(context, Err.toString());

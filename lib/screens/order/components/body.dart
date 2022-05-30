@@ -17,13 +17,14 @@ class _OrderbodyState extends State<Orderbody> {
   List cartprods;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return
+      FutureBuilder(
       future: CartService().getCartProducts(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
-         cartprods = snapshot.data;
+         cartprods = snapshot.data.cartproducts;
         return ListView.builder(
             itemCount: cartprods.length,
             itemBuilder: (BuildContext context, int index) {
