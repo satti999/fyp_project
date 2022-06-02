@@ -24,7 +24,22 @@ class ProductService {
       CartModel cartprods = await CartService().getCartProducts();
       //check if this product id exists
       var r = cartprods.cartproducts.firstWhere(
-          (element) => element.product_id == product_id,
+              (element) => element.product_id == product_id,
+          orElse: () => null);
+      return r ?? 0;
+      //display discard
+      //delete using cart_id
+    } catch (er) {
+      throw er;
+    }
+  }
+  CheckIfProdExistInWishlist(product_id) async {
+    try {
+      //fetch cart
+     var wishlistprods = await CartService().getWishlist();
+      //check if this product id exists
+      var r = wishlistprods.firstWhere(
+              (element) => element['product'].id == product_id,
           orElse: () => null);
       return r ?? 0;
       //display discard

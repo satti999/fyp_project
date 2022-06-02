@@ -65,27 +65,42 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               Navigator.of(context).pop();
             },
           ),
-          IconButton(
-              onPressed: _isloading
-                  ? null
-                  : () async {
-                      try {
-                        setState(() {
-                          _isloading = true;
-                        });
-                        var res = await CartService().addToWishlist(
-                          widget.product.id,
-                        );
-                        SnackBarService().showSnackBar(context, res.toString());
-                      } catch (Err) {
-                        SnackBarService().showSnackBar(context, Err.toString());
-                      } finally {
-                        setState(() {
-                          _isloading = false;
-                        });
-                      }
-                    },
-              icon: Icon(Icons.favorite, color: kPrimaryColor))
+          FutureBuilder(
+              future: ProductService()
+                  .CheckIfProdExistInWishlist(widget.product.id),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return const Text('');
+                return IconButton(
+                    onPressed: _isloading
+                        ? null
+                        : () async {
+                            try {
+                              setState(() {
+                                _isloading = true;
+                              });
+                              var res = snapshot.data != 0
+                                  ? await CartService()
+                                      .deleteWishlist(snapshot.data['id'])
+                                  : await CartService().addToWishlist(
+                                      widget.product.id,
+                                    );
+                              SnackBarService()
+                                  .showSnackBar(context, res.toString());
+                            } catch (Err) {
+                              SnackBarService()
+                                  .showSnackBar(context, Err.toString());
+                            } finally {
+                              setState(() {
+                                _isloading = false;
+                              });
+                            }
+                          },
+                    icon: Icon(
+                        snapshot.data != 0
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: kPrimaryColor));
+              })
         ],
       ),
     );
