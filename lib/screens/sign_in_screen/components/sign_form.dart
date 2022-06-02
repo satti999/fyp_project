@@ -142,7 +142,8 @@ class _SignFormState extends State<SignForm> {
         }
         return null;
       },
-      decoration: InputDecoration(
+      decoration:
+      InputDecoration(
         labelText: "Password",
         border: outlineInputBorder(),
         hintText: "Enter your password",

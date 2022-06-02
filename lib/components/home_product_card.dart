@@ -25,14 +25,16 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  bool cartLoading=false;
+  bool cartLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductDetailPage(product: widget.product)),
+          MaterialPageRoute(
+              builder: (context) => ProductDetailPage(product: widget.product)),
         );
       },
       child: Padding(
@@ -50,7 +52,8 @@ class _ProductCardState extends State<ProductCard> {
                     color: kSecondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Image.network("${IMAGESURL}${widget.product.image.split(",")[0]}"),
+                  child: Image.network(
+                      "${IMAGESURL}${widget.product.image.split(",")[0]}"),
                 ),
               ),
               const SizedBox(height: 10),
@@ -70,53 +73,48 @@ class _ProductCardState extends State<ProductCard> {
                       color: kPrimaryColor,
                     ),
                   ),
-                  InkWell(
-                    onTap:
-                    cartLoading? null: () async{
-                      try{
-                        setState(() {
-                          cartLoading=true;
-                        });
-                        var res=await CartService().addToWishlist({
-                          "product_id":widget.product.id,
-                        });
-                        SnackBarService().showSnackBar(context, res.toString());
-
-                      }
-                      catch(Err){
-                        SnackBarService().showSnackBar(context, Err.toString());
-                      }
-                      finally{
-                        setState(() {
-                          cartLoading=false;
-                        });
-                      }
-
-
-
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(getProportionateScreenWidth(6)),
-                      height: getProportionateScreenWidth(32),
-                      width: getProportionateScreenWidth(32),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFF6F57),
-                          borderRadius:  BorderRadius.only(
-                            topLeft:  Radius.circular(4.0),
-                            topRight: Radius.circular(4.0),
-                            bottomLeft:  Radius.circular(4.0),
-                              bottomRight:  Radius.circular(4.0)
-                          )
-
-                      ),
-                      child:cartLoading? CircularProgressIndicator(
-                        color: Colors.white,
-                      ) : SvgPicture.asset(
-                        "assets/icons/Heart Icon_2.svg",
-                      ),
-
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: cartLoading
+                  //       ? null
+                  //       : () async {
+                  //           try {
+                  //             setState(() {
+                  //               cartLoading = true;
+                  //             });
+                  //             var res = await CartService().addToWishlist(
+                  //               widget.product.id,
+                  //             );
+                  //             SnackBarService()
+                  //                 .showSnackBar(context, res.toString());
+                  //           } catch (Err) {
+                  //             SnackBarService()
+                  //                 .showSnackBar(context, Err.toString());
+                  //           } finally {
+                  //             setState(() {
+                  //               cartLoading = false;
+                  //             });
+                  //           }
+                  //         },
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(getProportionateScreenWidth(6)),
+                  //     height: getProportionateScreenWidth(32),
+                  //     width: getProportionateScreenWidth(32),
+                  //     decoration: const BoxDecoration(
+                  //         color: Color(0xFFFF6F57),
+                  //         borderRadius: BorderRadius.only(
+                  //             topLeft: Radius.circular(4.0),
+                  //             topRight: Radius.circular(4.0),
+                  //             bottomLeft: Radius.circular(4.0),
+                  //             bottomRight: Radius.circular(4.0))),
+                  //     child: cartLoading
+                  //         ? CircularProgressIndicator(
+                  //             color: Colors.white,
+                  //           )
+                  //         : SvgPicture.asset(
+                  //             "assets/icons/Heart Icon_2.svg",
+                  //           ),
+                  //   ),
+                  // ),
                 ],
               )
             ],

@@ -4,14 +4,19 @@ class ProfileModel {
   String email;
   String address;
   String contact;
-
-  ProfileModel({this.name, this.email, this.address, this.contact});
+String country;
+String state;
+String city;
+  ProfileModel({this.name, this.email, this.address, this.contact,this.city,this.country,this.state});
 
   factory ProfileModel.fromMap(data) {
     return ProfileModel(
         name: data['name'],
         address: data['address'],
         email: data['email'],
+        city: data['city'],
+        country: data['country'],
+        state: data['state'],
         contact: data['contact']);
   }
 }

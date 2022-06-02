@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/home_constans.dart';
+import 'package:shop_app/model/cart_view_item_model.dart';
 import 'package:shop_app/model/product_model.dart';
-import 'package:shop_app/screens/details/components/select_size.dart';
 import 'package:shop_app/services/cart_service.dart';
+import 'package:shop_app/services/product_service.dart';
 import 'package:shop_app/services/snackbar_service.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -64,6 +65,27 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               Navigator.of(context).pop();
             },
           ),
+          IconButton(
+              onPressed: _isloading
+                  ? null
+                  : () async {
+                      try {
+                        setState(() {
+                          _isloading = true;
+                        });
+                        var res = await CartService().addToWishlist(
+                          widget.product.id,
+                        );
+                        SnackBarService().showSnackBar(context, res.toString());
+                      } catch (Err) {
+                        SnackBarService().showSnackBar(context, Err.toString());
+                      } finally {
+                        setState(() {
+                          _isloading = false;
+                        });
+                      }
+                    },
+              icon: Icon(Icons.favorite, color: kPrimaryColor))
         ],
       ),
     );
@@ -186,87 +208,130 @@ class _ProductDetailPageState extends State<ProductDetailPage>
               ),
               color: Colors.white),
           child: SingleChildScrollView(
-            controller: scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                SizedBox(height: 5),
-                Container(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: 50,
-                    height: 5,
-                    decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  child: Row(
+              controller: scrollController,
+              child: FutureBuilder(
+                future:
+                    ProductService().CheckIfProdExistInCart(widget.product.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: CircularProgressIndicator(color: kPrimaryColor));
+                  }
+                  return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Text("${widget.product.name}",
-                          style: TextStyle(fontSize: 25)),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      SizedBox(height: 5),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 50,
+                          height: 5,
+                          decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text("\$",
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.red)),
-                              Text("${widget.product.price}",
-                                  style: TextStyle(fontSize: 25)),
-                            ],
+                          Expanded(
+                            child: Text("${widget.product.name}",
+                                style: TextStyle(fontSize: 25)),
                           ),
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              Icon(Icons.star, color: Colors.yellow, size: 17),
-                              Icon(Icons.star, color: Colors.yellow, size: 17),
-                              Icon(Icons.star, color: Colors.yellow, size: 17),
-                              Icon(Icons.star, color: Colors.yellow, size: 17),
-                              Icon(Icons.star_border, size: 17),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("\$",
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.red)),
+                                  Text("${widget.product.price}",
+                                      style: TextStyle(fontSize: 25)),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Icon(Icons.star,
+                                      color: Colors.yellow, size: 17),
+                                  Icon(Icons.star,
+                                      color: Colors.yellow, size: 17),
+                                  Icon(Icons.star,
+                                      color: Colors.yellow, size: 17),
+                                  Icon(Icons.star,
+                                      color: Colors.yellow, size: 17),
+                                  Icon(Icons.star_border, size: 17),
+                                ],
+                              ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                // _availableSize(),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // _availableColor(),
-                SizedBox(
-                  height: 20,
-                ),
-                widget.product.size != null && childs.isNotEmpty
-                    ? Row(
+
+                      // _availableSize(),
+                      // SizedBox(
+                      //   height: 20,
+                      // ),
+                      // _availableColor(),
+
+                      SizedBox(
+                        height: 20,
+                      ),
+                      widget.product.size != null && childs.isNotEmpty
+                          ? Row(
+                              children: [
+                                const Text("Size"),
+                                sizeSelector(),
+                              ],
+                            )
+                          : Text(''),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _description(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Size"),
-                          sizeSelector(),
+                          _quanBtns(),
+                          snapshot.data != 0
+                              ? IconButton(
+                                  onPressed: () async {
+                                    try {
+                                      setState(() {
+                                        _isloading = true;
+                                      });
+                                      CartViewItemModel cartItem =
+                                          snapshot.data;
+                                      var r = await CartService()
+                                          .deleteCartProduct(cartItem.cartId);
+                                      SnackBarService()
+                                          .showSnackBar(context, "$r");
+                                    } catch (err) {
+                                      SnackBarService()
+                                          .showSnackBar(context, "$err");
+                                    } finally {
+                                      setState(() {
+                                        _isloading = false;
+                                      });
+                                    }
+                                  },
+                                  icon:
+                                      Icon(Icons.remove_shopping_cart_outlined))
+                              : Text('')
                         ],
                       )
-                    : Text(''),
-                SizedBox(
-                  height: 20,
-                ),
-                _description(),
-                SizedBox(
-                  height: 20,
-                ),
-                _quanBtns()
-              ],
-            ),
-          ),
+                    ],
+                  );
+                },
+              )),
         );
       },
     );
@@ -432,45 +497,70 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     );
   }
 
-  FloatingActionButton _flotingButton() {
-    return FloatingActionButton(
-      onPressed: _isloading
-          ? null
-          : () async {
-              try {
-                if (widget.product.size != null &&
-                    childs.isNotEmpty &&
-                    size_id == null) {
-                  throw "Must select size";
+  _CartButton() {
+    return Container(
+      height: 50,
+      child: MaterialButton(
+        disabledColor: Colors.black26,
+        onPressed: _isloading
+            ? null
+            : () async {
+                try {
+                  if (widget.product.size != null &&
+                      childs.isNotEmpty &&
+                      size_id == null) {
+                    throw "Must select size";
+                  }
+                  setState(() {
+                    _isloading = true;
+                  });
+                  var res = await CartService().addToCart({
+                    "product_id": widget.product.id,
+                    "quantity": quan,
+                    "size_id": size_id,
+                    "vendor_id": widget.product.vendor_id
+                  });
+                  SnackBarService().showSnackBar(context, res.toString());
+                } catch (Err) {
+                  SnackBarService().showSnackBar(context, Err.toString());
+                } finally {
+                  setState(() {
+                    _isloading = false;
+                  });
                 }
-                setState(() {
-                  _isloading = true;
-                });
-                var res = await CartService().addToCart({
-                  "product_id": widget.product.id,
-                  "quantity": quan,
-                  "size_id": size_id,
-                  "vendor_id": widget.product.vendor_id
-                });
-                SnackBarService().showSnackBar(context, res.toString());
-              } catch (Err) {
-                SnackBarService().showSnackBar(context, Err.toString());
-              } finally {
-                setState(() {
-                  _isloading = false;
-                });
-              }
-            },
-      backgroundColor: Colors.orange,
-      child: Icon(Icons.shopping_basket,
-          color: Theme.of(context).floatingActionButtonTheme.backgroundColor),
+              },
+        color: Colors.orange,
+        child: _isloading
+            ? const Text(
+                "Loading...",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.shopping_basket, color: Colors.white),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text("Add to cart",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _flotingButton(),
+      bottomNavigationBar: _CartButton(),
+      // floatingActionButton: _flotingCartButton(),
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(

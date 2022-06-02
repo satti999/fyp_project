@@ -24,7 +24,7 @@ class _CheckoutViewProductState extends State<CheckoutViewProduct> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("${widget.quantity}x"),
+          Text(widget.quantity!=null && widget.quantity>0 ? "${widget.quantity}x": ""),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
