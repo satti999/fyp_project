@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/components/product_details_widget.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/model/cart_view_item_model.dart';
@@ -22,7 +23,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   bool _isloading = false;
   AnimationController controller;
   Animation<double> animation;
-
+  bool enableCartDiscard = false;
   List<String> childs;
 
   List<bool> tmp;
@@ -535,6 +536,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                     "size_id": size_id,
                     "vendor_id": widget.product.vendor_id
                   });
+                  setState(() {
+                    enableCartDiscard = true;
+                  });
                   SnackBarService().showSnackBar(context, res.toString());
                 } catch (Err) {
                   SnackBarService().showSnackBar(context, Err.toString());
@@ -596,7 +600,48 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                   _categoryWidget(),
                 ],
               ),
-              _detailWidget()
+              FutureBuilder(
+                  future: ProductService()
+                      .CheckIfProdExistInCart(widget.product.id),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData)
+                      return Center(
+                          child: CircularProgressIndicator(
+                        color: kPrimaryColor,
+                      ));
+                    var cartprd = snapshot.data;
+                    return DetailsWidget(
+                        discardCartHandler: () async {
+                          try {
+                            var r = await CartService()
+                                .deleteCartProduct(cartprd.cartId);
+                            setState(() {});
+                            SnackBarService().showSnackBar(context, "$r");
+                          } catch (er) {
+                            SnackBarService().showSnackBar(context, "$er");
+                          }
+                        },
+                        enableCartDiscard: snapshot.data != 0,
+                        product: widget.product,
+                        quan: quan,
+                        quanDecHandler: () {
+                          if (quan > 1) {
+                            setState(() {
+                              quan--;
+                            });
+                          }
+                        },
+                        quanIncHandler: () {
+                          setState(() {
+                            quan++;
+                          });
+                        },
+                        sizeSelectHandler: (sizeVal) {
+                          setState(() {
+                            size_id = sizeVal;
+                          });
+                        });
+                  })
             ],
           ),
         ),

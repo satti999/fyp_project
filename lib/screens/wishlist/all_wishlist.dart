@@ -4,6 +4,8 @@ import 'package:shop_app/components/simple_app_bar.dart';
 import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/services/cart_service.dart';
 
+import '../../components/botom_navigation_bar.dart';
+import '../../enums.dart';
 import '../../services/snackbar_service.dart';
 
 class WishList extends StatefulWidget {
@@ -17,7 +19,11 @@ class _WishListState extends State<WishList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildSimpleAppBar(context, "My Wishlist", searchbar: false),
+        bottomNavigationBar: CustomBottomNavBar(
+          selectedMenu: MenuState.wishlist,
+        ),
+
+    appBar: buildSimpleAppBar(context, "My Wishlist", searchbar: false),
         body: FutureBuilder(
             future: CartService().getWishlist(),
             builder: (context, snapshot) {

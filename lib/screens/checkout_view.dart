@@ -5,6 +5,7 @@ import 'package:shop_app/components/simple_app_bar.dart';
 import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/model/product_model.dart';
 import 'package:shop_app/screens/main_screen_home/main_home_screen.dart';
+import 'package:shop_app/screens/payment_method/paymentScreen.dart';
 import 'package:shop_app/services/cart_service.dart';
 import 'package:shop_app/services/checkout_service.dart';
 import 'package:shop_app/services/snackbar_service.dart';
@@ -86,68 +87,74 @@ class _CheckoutViewState extends State<CheckoutView> {
                                         : "Place order",
                                     press: isloading
                                         ? null
-                                        : () async {
-                                            try {
-                                              print(
-                                                  "hee ${snapshot.data.products}");
-                                              if (snapshot.data != null &&
-                                                  snapshot.data.products !=
-                                                      null) {
-                                                setState(() {
-                                                  isloading = true;
-                                                });
-
-                                                await Future.delayed(
-                                                    Duration(seconds: 4));
-
-                                                var t = snapshot.data.products
-                                                    .map((prod) {
-                                                  // print("prod ${prod['product_id'].id}");
-                                                  prod['size_id'] = null;
-                                                  prod['vendor_id'] =
-                                                      prod['product'].vendor_id;
-
-                                                  prod['product_id'] =
-                                                      prod['product'].id;
-                                                  prod['product'] =
-                                                      ProductModel().toMap(
-                                                          prod['product']);
-                                                  return prod;
-                                                }).toList();
-
-                                                //  snapShotProducts=snapShotProducts as List;
-                                                //  var t=snapShotProducts.map((prod){
-                                                //    return ProductModel().toMap(prod['product']);
-                                                //  }).toList();
-                                                // snapshot.data.products['product']=t;
-                                                // print( ProductModel().toMap( snapShotProducts[0]['product']));
-                                                // snapShotProducts.map((s)=> ProductModel().toMap( s['product'])).toList();
-                                                // var prods=snapshot.data.products.map((prod)=> ProductModel().toMap(prod['product'])).toList();
-                                                // print("prods $snapShotProducts");
-                                                var res =
-                                                    await CheckoutService()
-                                                        .placeOrder(
-                                                            t,
-                                                            snapshot
-                                                                .data.total);
-
-                                                buildDialog();
-                                                await Future.delayed(
-                                                    const Duration(seconds: 2));
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MainHomeScreen()));
-                                              }
-                                            } catch (Err) {
-                                              SnackBarService().showSnackBar(
-                                                  context, Err.toString());
-                                            } finally {
-                                              setState(() {
-                                                isloading = false;
-                                              });
-                                            }
+                                        : ()  {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PaymentScreen(totalprice: snapshot.data.total,)));
+                                            // try {
+                                            //   print(
+                                            //       "hee ${snapshot.data.products}");
+                                            //   if (snapshot.data != null &&
+                                            //       snapshot.data.products !=
+                                            //           null) {
+                                            //     setState(() {
+                                            //       isloading = true;
+                                            //     });
+                                            //
+                                            //     await Future.delayed(
+                                            //         Duration(seconds: 4));
+                                            //
+                                            //     var t = snapshot.data.products
+                                            //         .map((prod) {
+                                            //       // print("prod ${prod['product_id'].id}");
+                                            //       prod['size_id'] = null;
+                                            //       prod['vendor_id'] =
+                                            //           prod['product'].vendor_id;
+                                            //
+                                            //       prod['product_id'] =
+                                            //           prod['product'].id;
+                                            //       prod['product'] =
+                                            //           ProductModel().toMap(
+                                            //               prod['product']);
+                                            //       return prod;
+                                            //     }).toList();
+                                            //
+                                            //     //  snapShotProducts=snapShotProducts as List;
+                                            //     //  var t=snapShotProducts.map((prod){
+                                            //     //    return ProductModel().toMap(prod['product']);
+                                            //     //  }).toList();
+                                            //     // snapshot.data.products['product']=t;
+                                            //     // print( ProductModel().toMap( snapShotProducts[0]['product']));
+                                            //     // snapShotProducts.map((s)=> ProductModel().toMap( s['product'])).toList();
+                                            //     // var prods=snapshot.data.products.map((prod)=> ProductModel().toMap(prod['product'])).toList();
+                                            //     // print("prods $snapShotProducts");
+                                            //     // var res =
+                                            //     //     await CheckoutService()
+                                            //     //         .placeOrder(
+                                            //     //             t,
+                                            //     //             snapshot
+                                            //     //                 .data.total);
+                                            //
+                                            //
+                                            //     // buildDialog();
+                                            //     // await Future.delayed(
+                                            //     //     const Duration(seconds: 2));
+                                            //     Navigator.pushReplacement(
+                                            //         context,
+                                            //         MaterialPageRoute(
+                                            //             builder: (context) =>
+                                            //                 MainHomeScreen()));
+                                            //   }
+                                            // } catch (Err) {
+                                            //   SnackBarService().showSnackBar(
+                                            //       context, Err.toString());
+                                            // } finally {
+                                            //   setState(() {
+                                            //     isloading = false;
+                                            //   });
+                                            // }
                                           },
                                   )
                                 ],

@@ -4,6 +4,7 @@ import 'package:shop_app/enums.dart';
 import 'package:shop_app/screens/main_screen_home/main_home_screen.dart';
 import 'package:shop_app/screens/order/order_screen.dart';
 import 'package:shop_app/screens/user_profile_screen/user_profile_screen.dart';
+import 'package:shop_app/screens/wishlist/all_wishlist.dart';
 
 import '../home_constans.dart';
 
@@ -55,6 +56,16 @@ class CustomBottomNavBar extends StatelessWidget {
             }, icon:
             SvgPicture.asset("assets/icons/cart_beg.svg",
               color: MenuState.cart==selectedMenu
+                  ?kPrimaryColor
+                  :inActiveIconColor,)),
+            IconButton(onPressed: (){
+              Navigator.of(context)
+                  .pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  const WishList()), (Route<dynamic> route) => false);
+
+            }, icon:
+            SvgPicture.asset("assets/icons/Heart Icon.svg",
+              color: MenuState.wishlist==selectedMenu
                   ?kPrimaryColor
                   :inActiveIconColor,)),
             IconButton(onPressed: (){
