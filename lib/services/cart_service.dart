@@ -50,9 +50,10 @@ class CartService {
     try {
       var response = await dio.get('wishlists');
       var items = response.data['data'] as List;
+
       return items.map((e){
         return {
-         "product":ProductModel.fromMap( e['product']),
+         "product":e['product']==null?null : ProductModel.fromMap( e['product']),
          "id":e['id']
         };
       }).toList();

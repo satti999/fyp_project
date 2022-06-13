@@ -5,10 +5,10 @@ class CartViewItemModel {
   int quantity;
   int price;
   int cartId;
+  String size_id;
 
-  CartViewItemModel(this.productName,this.product_id ,this.image, this.quantity, this.price,
-      this.cartId);
-
+  CartViewItemModel(this.productName, this.product_id, this.image,
+      this.quantity, this.price, this.cartId, this.size_id);
 
   CartViewItemModel.fromMap(data)
       : productName = data['p_name'],
@@ -16,6 +16,7 @@ class CartViewItemModel {
         product_id = data['product_id'],
         quantity = data['quantity'],
         price = data['price'],
+        size_id = data['size_id'],
         cartId = data['c_id'];
 
 // {

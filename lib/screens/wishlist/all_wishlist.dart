@@ -22,38 +22,44 @@ class _WishListState extends State<WishList> {
         bottomNavigationBar: CustomBottomNavBar(
           selectedMenu: MenuState.wishlist,
         ),
-
-    appBar: buildSimpleAppBar(context, "My Wishlist", searchbar: false),
+        appBar: buildSimpleAppBar(context, "My Wishlist", searchbar: false),
         body: FutureBuilder(
             future: CartService().getWishlist(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
                     child: CircularProgressIndicator(
-                      color: kPrimaryColor,
-                    ));
+                  color: kPrimaryColor,
+                ));
               }
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var snapShotProducts = snapshot.data;
-                return CheckoutViewProduct(
-                    ondelete: () async {
-                      try {
-                        var res = await CartService()
-                            .deleteWishlist(snapShotProducts[index]['id']);
-                        setState(() {
-                          snapShotProducts.removeAt(index);
-                        });
-                        SnackBarService().showSnackBar(
-                            context, res.toString());
-                      } catch (Err) {
-                        SnackBarService().showSnackBar(
-                            context, Err.toString());
-                      }
-                    },
-                    product: snapShotProducts[index]['product']);
-                },);
+              return snapshot.data.length < 1
+                  ? Center(
+                      child: const Text('No products here'),
+                    )
+                  : ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var snapShotProducts = snapshot.data;
+                        if (snapShotProducts[index]['product'] == null)
+                          return const Text('');
+                        return CheckoutViewProduct(
+                            ondelete: () async {
+                              try {
+                                var res = await CartService().deleteWishlist(
+                                    snapShotProducts[index]['id']);
+                                setState(() {
+                                  snapShotProducts.removeAt(index);
+                                });
+                                SnackBarService()
+                                    .showSnackBar(context, res.toString());
+                              } catch (Err) {
+                                SnackBarService()
+                                    .showSnackBar(context, Err.toString());
+                              }
+                            },
+                            product: snapShotProducts[index]['product']);
+                      },
+                    );
             }));
   }
 }

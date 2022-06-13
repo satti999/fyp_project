@@ -27,7 +27,7 @@ class SectionTitle extends StatelessWidget {
         InkWell(
           onTap: press,
           child: const Text(
-            "See More",
+            "See All",
             style: TextStyle(color: Color(0xFFBBBBBB)),
           ),
         ),

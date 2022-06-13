@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shop_app/screens/home/search_screen.dart';
 import 'package:shop_app/screens/order/order_screen.dart';
 import 'package:shop_app/constants.dart';
 
@@ -17,7 +18,12 @@ AppBar buildAppBar(BuildContext context) {
     ),
 
     actions:  [
-      IconButton(onPressed: null,
+      IconButton(onPressed:(){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchScreen() ),
+        );
+      },
           icon: SvgPicture.asset("assets/icons/Search Icon.svg",color: Colors.black54,)),
       IconButton(onPressed: (){
         Navigator.push(

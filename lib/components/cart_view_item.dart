@@ -47,6 +47,8 @@ class _CartViewItemState extends State<CartViewItem> {
                         color: Colors.black, fontWeight: FontWeight.bold)),
                 SizedBox(height: 5),
                 Text("${widget.cartViewItem.price.toString()} \$"),
+                SizedBox(height: 5),
+                widget.cartViewItem.size_id!=null ? Text('Size : ${widget.cartViewItem.size_id}') :Text(''),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

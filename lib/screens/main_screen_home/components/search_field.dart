@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/home/search_screen.dart';
 import '../../../size_config.dart';
 
 class SearchField extends StatelessWidget {
@@ -21,6 +22,9 @@ class SearchField extends StatelessWidget {
           ]
       ),
       child: TextField(
+        onTap: (){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
+        },
         onChanged: (value) => print(value),
         decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(

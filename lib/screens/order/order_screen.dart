@@ -28,7 +28,7 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildSimpleAppBar(context, "Cart"),
+        appBar: buildSimpleAppBar(context, "Cart",searchbar: false),
         body: FutureBuilder(
           future: CartService().getCartProducts(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

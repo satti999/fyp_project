@@ -23,12 +23,13 @@ class ProductModel {
   String description;
   int categoryId;
   String name;
-  int price;
+  num price;
   String image;
   String size;
   String colors;
   int stock;
   int vendor_id;
+  num discount;
 
   ProductModel(
       {this.id,
@@ -38,8 +39,9 @@ class ProductModel {
       this.image,
       this.size,
       this.colors,
-        this.stock,
+      this.stock,
       this.description,
+      this.discount,
       this.vendor_id});
 
   Map toMap(ProductModel product) {
@@ -68,5 +70,6 @@ class ProductModel {
         colors = data['colors'],
         vendor_id = data['vendor_id'],
         stock = data['stock'],
+        discount = data['discount'],
         size = data['size'];
 }
