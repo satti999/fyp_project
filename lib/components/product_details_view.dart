@@ -157,7 +157,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
-            Text("AIP", style: TextStyle(fontSize: 160, color: Colors.black26)),
             Image.network(
                 "$IMAGESURL${widget.product.image.toString().split(',')[0]}")
           ],
@@ -597,6 +596,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                 children: <Widget>[
                   _appBar(),
                   _productImage(),
+                  SizedBox(height: 20,),
                   _categoryWidget(),
                 ],
               ),

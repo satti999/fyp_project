@@ -15,6 +15,7 @@ class CheckoutModel {
             .map((item) => {
                   "id": item['id'],
                   "quantity": item['quantity'],
+                  "size_id": item['size_id'],
                   "product": ProductModel.fromMap(item['product'])
                 })
             .toList());

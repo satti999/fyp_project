@@ -103,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    routes[index]));
+                                    routes[index])).then((_) => fetchProfile());
                       });
                     },
                   )),

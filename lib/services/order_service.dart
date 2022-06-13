@@ -7,6 +7,10 @@ class OrderService{
     try {
       var response= await dio.get("order-history");
       print(response.data);
+      var result=response.data;
+      if(result['message']!=null &&  result['message']=='No Records Found.'){
+        return [];
+      }
       return response.data;
       // return ProfileModel.fromMap(response.data['data']);
     }

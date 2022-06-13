@@ -18,7 +18,7 @@ class OrderHistory extends StatelessWidget {
             ));
           }
 
-          return Text("hehe");
+          return snapshot.data.length>0 ? Text('orders'): Text("No records found");
         },
       ),
     );
