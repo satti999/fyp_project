@@ -88,54 +88,71 @@ class categoriesButtons extends StatelessWidget {
   }
 
   Widget Category_btn(BuildContext context, CategoryModel category) =>
-      Container(
-        height: 46,
-        width: 122,
-        decoration: BoxDecoration(
-            color: Color(0xFFF5F5F5),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(0, 1),
-              )
-            ]),
-        child: Row(
-mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+      InkWell(
+        onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomeScreen(
+                        categoryId: category.id, categoryName: category.title)),
+              );
+        },
+        child: Container(
+            height: 46,
+            width: 122,
+            decoration: BoxDecoration(
+                color: Color(0xFFF5F5F5),
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 1,
+                    offset: Offset(0, 1),
+                  )
+                ]),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 category.icon != null
-                    ? Image.network(IMAGESURL + category.icon,height: 30,width: 30,)
-                    :  Image.asset(
+                    ? Image.network(
+                        IMAGESURL + category.icon,
+                        height: 30,
+                        width: 30,
+                      )
+                    : Image.asset(
                         "assets/icons/garments.png",
                       ),
-SizedBox(width: 10,),
-            Text(category.title)],
-        )
-        // TextButton.icon(
-        //   label: Text(
-        //     category.title,
-        //     style: TextStyle(color: Colors.black54),
-        //   ),
-        //   icon: ImageIcon(
-        //     category.icon != null
-        //         ? NetworkImage(IMAGESURL + category.icon)
-        //         : const AssetImage(
-        //             "assets/icons/garments.png",
-        //           ),
-        //     color: kPrimaryColor,
-        //   ),
-        //   onPressed: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) => HomeScreen(
-        //               categoryId: category.id, categoryName: category.title)),
-        //     );
-        //   },
-        // ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(category.title)
+              ],
+            )
+            // TextButton.icon(
+            //   label: Text(
+            //     category.title,
+            //     style: TextStyle(color: Colors.black54),
+            //   ),
+            //   icon: ImageIcon(
+            //     category.icon != null
+            //         ? NetworkImage(IMAGESURL + category.icon)
+            //         : const AssetImage(
+            //             "assets/icons/garments.png",
+            //           ),
+            //     color: kPrimaryColor,
+            //   ),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => HomeScreen(
+            //               categoryId: category.id, categoryName: category.title)),
+            //     );
+            //   },
+            // ),
+            ),
       );
 
 // Widget Garments_btn(BuildContext context) => Container(
