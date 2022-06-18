@@ -51,7 +51,6 @@ class _PaymentCheckoutStepState extends State<PaymentCheckoutStep> {
               onChanged: (paymentTypeEnum value) {
                 setState(() {
                   prv.setpaymentType(value);
-
                 });
               },
             ),

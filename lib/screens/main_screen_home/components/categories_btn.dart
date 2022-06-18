@@ -102,28 +102,40 @@ class categoriesButtons extends StatelessWidget {
                 offset: Offset(0, 1),
               )
             ]),
-        child: TextButton.icon(
-          label: Text(
-            category.title,
-            style: TextStyle(color: Colors.black54),
-          ),
-          icon: ImageIcon(
-            category.icon != null
-                ? NetworkImage(IMAGESURL + category.icon)
-                : const AssetImage(
-                    "assets/icons/garments.png",
-                  ),
-            color: kPrimaryColor,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomeScreen(
-                      categoryId: category.id, categoryName: category.title)),
-            );
-          },
-        ),
+        child: Row(
+mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+                category.icon != null
+                    ? Image.network(IMAGESURL + category.icon,height: 30,width: 30,)
+                    :  Image.asset(
+                        "assets/icons/garments.png",
+                      ),
+SizedBox(width: 10,),
+            Text(category.title)],
+        )
+        // TextButton.icon(
+        //   label: Text(
+        //     category.title,
+        //     style: TextStyle(color: Colors.black54),
+        //   ),
+        //   icon: ImageIcon(
+        //     category.icon != null
+        //         ? NetworkImage(IMAGESURL + category.icon)
+        //         : const AssetImage(
+        //             "assets/icons/garments.png",
+        //           ),
+        //     color: kPrimaryColor,
+        //   ),
+        //   onPressed: () {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => HomeScreen(
+        //               categoryId: category.id, categoryName: category.title)),
+        //     );
+        //   },
+        // ),
       );
 
 // Widget Garments_btn(BuildContext context) => Container(
