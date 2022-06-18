@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/model/category_model.dart';
 import 'package:shop_app/screens/food_item_screen/food_item_screen.dart';
 import 'package:shop_app/screens/home/home_screem.dart';
@@ -9,7 +10,7 @@ import 'package:shop_app/screens/home/home_screem.dart';
 class categoriesButtons extends StatelessWidget {
   List<dynamic> categories;
 
-  categoriesButtons({Key key,this.categories}) : super(key: key);
+  categoriesButtons({Key key, this.categories}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,177 +113,175 @@ class categoriesButtons extends StatelessWidget {
                 : const AssetImage(
                     "assets/icons/garments.png",
                   ),
-            color: Colors.black54,
+            color: kPrimaryColor,
           ),
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => HomeScreen(
-                        categoryId: category.id,
-                    categoryName: category.title
-                      )),
+                      categoryId: category.id, categoryName: category.title)),
             );
           },
         ),
       );
 
-  // Widget Garments_btn(BuildContext context) => Container(
-  //       height: 46,
-  //       width: 122,
-  //       decoration: BoxDecoration(
-  //           color: Color(0xFFF5F5F5),
-  //           borderRadius: BorderRadius.circular(10),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.2),
-  //               spreadRadius: 1,
-  //               blurRadius: 1,
-  //               offset: Offset(0, 1),
-  //             )
-  //           ]),
-  //       child: TextButton.icon(
-  //         label: const Text(
-  //           "Garments",
-  //           style: TextStyle(color: Colors.black54),
-  //         ),
-  //         icon: const ImageIcon(
-  //           AssetImage(
-  //             "assets/icons/garments.png",
-  //           ),
-  //           color: Colors.black54,
-  //         ),
-  //         onPressed: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => HomeScreen()),
-  //           );
-  //         },
-  //       ),
-  //     );
-  //
-  // Widget Electronics_btn(BuildContext context) => Container(
-  //       height: 46,
-  //       width: 122,
-  //       decoration: BoxDecoration(
-  //           color: Color(0xFFF5F5F5),
-  //           borderRadius: BorderRadius.circular(10),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.2),
-  //               spreadRadius: 1,
-  //               blurRadius: 1,
-  //               offset: Offset(0, 1),
-  //             )
-  //           ]),
-  //       child: TextButton.icon(
-  //         label: const Text(
-  //           "Electronics",
-  //           style: TextStyle(color: Colors.black54),
-  //         ),
-  //         icon: const ImageIcon(
-  //           AssetImage(
-  //             "assets/icons/electronics.png",
-  //           ),
-  //           color: Colors.black54,
-  //         ),
-  //         onPressed: () {
-  //           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //             content: Text("Coming soon"),
-  //           ));
-  //         },
-  //       ),
-  //     );
-  //
-  // Widget Cosmetics_btn() => Container(
-  //       height: 46,
-  //       width: 122,
-  //       decoration: BoxDecoration(
-  //           color: Color(0xFFF5F5F5),
-  //           borderRadius: BorderRadius.circular(10),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.2),
-  //               spreadRadius: 1,
-  //               blurRadius: 1,
-  //               offset: Offset(0, 1),
-  //             )
-  //           ]),
-  //       child: TextButton.icon(
-  //         label: const Text(
-  //           "Cosmetics",
-  //           style: TextStyle(color: Colors.black54),
-  //         ),
-  //         icon: const ImageIcon(
-  //           AssetImage(
-  //             "assets/icons/cosmetics.png",
-  //           ),
-  //           color: Colors.black54,
-  //         ),
-  //         onPressed: () {},
-  //       ),
-  //     );
-  //
-  // Widget Food_item_btn(BuildContext context) => Container(
-  //       height: 46,
-  //       width: 122,
-  //       decoration: BoxDecoration(
-  //           color: Color(0xFFF5F5F5),
-  //           borderRadius: BorderRadius.circular(10),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.2),
-  //               spreadRadius: 1,
-  //               blurRadius: 1,
-  //               offset: Offset(0, 1),
-  //             )
-  //           ]),
-  //       child: TextButton.icon(
-  //         label: const Text(
-  //           "Food Items",
-  //           style: TextStyle(color: Colors.black54),
-  //         ),
-  //         icon: const ImageIcon(
-  //           AssetImage(
-  //             "assets/icons/grocery.png",
-  //           ),
-  //           color: Colors.black54,
-  //         ),
-  //         onPressed: () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => FoodItems()),
-  //           );
-  //         },
-  //       ),
-  //     );
-  //
-  // Widget Non_Food_item_btn() => Container(
-  //       height: 46,
-  //       width: 122,
-  //       decoration: BoxDecoration(
-  //           color: Color(0xFFF5F5F5),
-  //           borderRadius: BorderRadius.circular(10),
-  //           boxShadow: [
-  //             BoxShadow(
-  //               color: Colors.grey.withOpacity(0.2),
-  //               spreadRadius: 1,
-  //               blurRadius: 1,
-  //               offset: Offset(0, 1),
-  //             )
-  //           ]),
-  //       child: TextButton.icon(
-  //         label: const Text(
-  //           "Non Food Items",
-  //           style: TextStyle(color: Colors.black54),
-  //         ),
-  //         icon: const ImageIcon(
-  //           AssetImage(
-  //             "assets/icons/non_food_icon.png",
-  //           ),
-  //           color: Colors.black54,
-  //         ),
-  //         onPressed: () {},
-  //       ),
-  //     );
+// Widget Garments_btn(BuildContext context) => Container(
+//       height: 46,
+//       width: 122,
+//       decoration: BoxDecoration(
+//           color: Color(0xFFF5F5F5),
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.withOpacity(0.2),
+//               spreadRadius: 1,
+//               blurRadius: 1,
+//               offset: Offset(0, 1),
+//             )
+//           ]),
+//       child: TextButton.icon(
+//         label: const Text(
+//           "Garments",
+//           style: TextStyle(color: Colors.black54),
+//         ),
+//         icon: const ImageIcon(
+//           AssetImage(
+//             "assets/icons/garments.png",
+//           ),
+//           color: Colors.black54,
+//         ),
+//         onPressed: () {
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(builder: (context) => HomeScreen()),
+//           );
+//         },
+//       ),
+//     );
+//
+// Widget Electronics_btn(BuildContext context) => Container(
+//       height: 46,
+//       width: 122,
+//       decoration: BoxDecoration(
+//           color: Color(0xFFF5F5F5),
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.withOpacity(0.2),
+//               spreadRadius: 1,
+//               blurRadius: 1,
+//               offset: Offset(0, 1),
+//             )
+//           ]),
+//       child: TextButton.icon(
+//         label: const Text(
+//           "Electronics",
+//           style: TextStyle(color: Colors.black54),
+//         ),
+//         icon: const ImageIcon(
+//           AssetImage(
+//             "assets/icons/electronics.png",
+//           ),
+//           color: Colors.black54,
+//         ),
+//         onPressed: () {
+//           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//             content: Text("Coming soon"),
+//           ));
+//         },
+//       ),
+//     );
+//
+// Widget Cosmetics_btn() => Container(
+//       height: 46,
+//       width: 122,
+//       decoration: BoxDecoration(
+//           color: Color(0xFFF5F5F5),
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.withOpacity(0.2),
+//               spreadRadius: 1,
+//               blurRadius: 1,
+//               offset: Offset(0, 1),
+//             )
+//           ]),
+//       child: TextButton.icon(
+//         label: const Text(
+//           "Cosmetics",
+//           style: TextStyle(color: Colors.black54),
+//         ),
+//         icon: const ImageIcon(
+//           AssetImage(
+//             "assets/icons/cosmetics.png",
+//           ),
+//           color: Colors.black54,
+//         ),
+//         onPressed: () {},
+//       ),
+//     );
+//
+// Widget Food_item_btn(BuildContext context) => Container(
+//       height: 46,
+//       width: 122,
+//       decoration: BoxDecoration(
+//           color: Color(0xFFF5F5F5),
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.withOpacity(0.2),
+//               spreadRadius: 1,
+//               blurRadius: 1,
+//               offset: Offset(0, 1),
+//             )
+//           ]),
+//       child: TextButton.icon(
+//         label: const Text(
+//           "Food Items",
+//           style: TextStyle(color: Colors.black54),
+//         ),
+//         icon: const ImageIcon(
+//           AssetImage(
+//             "assets/icons/grocery.png",
+//           ),
+//           color: Colors.black54,
+//         ),
+//         onPressed: () {
+//           Navigator.push(
+//             context,
+//             MaterialPageRoute(builder: (context) => FoodItems()),
+//           );
+//         },
+//       ),
+//     );
+//
+// Widget Non_Food_item_btn() => Container(
+//       height: 46,
+//       width: 122,
+//       decoration: BoxDecoration(
+//           color: Color(0xFFF5F5F5),
+//           borderRadius: BorderRadius.circular(10),
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.withOpacity(0.2),
+//               spreadRadius: 1,
+//               blurRadius: 1,
+//               offset: Offset(0, 1),
+//             )
+//           ]),
+//       child: TextButton.icon(
+//         label: const Text(
+//           "Non Food Items",
+//           style: TextStyle(color: Colors.black54),
+//         ),
+//         icon: const ImageIcon(
+//           AssetImage(
+//             "assets/icons/non_food_icon.png",
+//           ),
+//           color: Colors.black54,
+//         ),
+//         onPressed: () {},
+//       ),
+//     );
 }

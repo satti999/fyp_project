@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   var menuItems = [
     {
-      "text": "Edit Profile",
+      "text": "Profile",
       "icon": Icons.account_box,
     },
     {"text": "My Orders", "icon": Icons.history},

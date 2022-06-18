@@ -7,6 +7,7 @@ import 'package:shop_app/services/cart_service.dart';
 import '../../components/botom_navigation_bar.dart';
 import '../../enums.dart';
 import '../../services/snackbar_service.dart';
+import '../main_screen_home/main_home_screen.dart';
 
 class WishList extends StatefulWidget {
   const WishList({Key key}) : super(key: key);
@@ -19,10 +20,14 @@ class _WishListState extends State<WishList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: CustomBottomNavBar(
+        bottomNavigationBar: const CustomBottomNavBar(
           selectedMenu: MenuState.wishlist,
         ),
-        appBar: buildSimpleAppBar(context, "My Wishlist", searchbar: false),
+        appBar: buildSimpleAppBar(context, "My Wishlist", searchbar: false,
+            onbackPressed: () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => MainHomeScreen()));
+        }),
         body: FutureBuilder(
             future: CartService().getWishlist(),
             builder: (context, snapshot) {
@@ -33,8 +38,8 @@ class _WishListState extends State<WishList> {
                 ));
               }
               return snapshot.data.length < 1
-                  ? Center(
-                      child: const Text('No products here'),
+                  ? const Center(
+                      child: Text('No products here'),
                     )
                   : ListView.builder(
                       itemCount: snapshot.data.length,

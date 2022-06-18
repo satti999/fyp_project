@@ -11,20 +11,20 @@ class MainHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Home",
           style: TextStyle(color: Colors.black54),
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.4,
-        leading: const IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Colors.black54,
-          ),
-          onPressed: null,
-        ),
+        // leading: const IconButton(
+        //   icon: Icon(
+        //     Icons.menu,
+        //     color: Colors.black54,
+        //   ),
+        //   onPressed: null,
+        // ),
         actions: [
 
           IconButton(
@@ -38,19 +38,19 @@ class MainHomeScreen extends StatelessWidget {
                 "assets/icons/shopping_cart.svg",
                 color: Colors.black54,
               )),
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/Bell.svg",
-              color: Colors.black54,
-            ),
-            onPressed: () {},
-          ),
+          // IconButton(
+          //   icon: SvgPicture.asset(
+          //     "assets/icons/Bell.svg",
+          //     color: Colors.black54,
+          //   ),
+          //   onPressed: () {},
+          // ),
         ],
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(16))),
       ),
       body: Body(),
-      bottomNavigationBar: CustomBottomNavBar(
+      bottomNavigationBar: const CustomBottomNavBar(
         selectedMenu: MenuState.home,
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-AppBar buildSimpleAppBar(BuildContext context, String title,{bool searchbar=true}) {
+AppBar buildSimpleAppBar(BuildContext context, String title,{bool searchbar=true,onbackPressed}) {
   return AppBar(
     title: Text(
       "${title}",
@@ -15,7 +15,7 @@ AppBar buildSimpleAppBar(BuildContext context, String title,{bool searchbar=true
         "assets/icons/Back ICon.svg",
         color: Colors.black54,
       ),
-      onPressed: () {
+      onPressed:onbackPressed ?? () {
         Navigator.pop(context);
       },
     ),

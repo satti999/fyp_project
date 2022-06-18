@@ -32,7 +32,7 @@ class _CheckoutViewProductState extends State<CheckoutViewProduct> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("${widget.product.name}"),
+                  Expanded(child: Text("${widget.product.name}")),
                   Text("\$${widget.product.price}"),
                 ],
               ),

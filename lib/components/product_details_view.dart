@@ -39,6 +39,12 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     controller.forward();
     childs = widget.product.size.toString().split(",").toList();
     tmp = List.generate(childs.length, (index) => false);
+    fetchRelatedProds();
+  }
+
+  fetchRelatedProds() async {
+    var t = await ProductService().fetchProductUsingId("${widget.product.id}");
+    print(t);
   }
 
   @override
@@ -596,7 +602,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                 children: <Widget>[
                   _appBar(),
                   _productImage(),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   _categoryWidget(),
                 ],
               ),

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:shop_app/components/botom_navigation_bar.dart';
 import 'package:shop_app/components/cart_view_item.dart';
 import 'package:shop_app/components/default_button.dart';
@@ -10,7 +9,6 @@ import 'package:shop_app/home_constans.dart';
 import 'package:shop_app/model/cart_view_item_model.dart';
 import 'package:shop_app/screens/all_products.dart';
 import 'package:shop_app/screens/main_screen_home/main_home_screen.dart';
-import 'package:shop_app/screens/order/components/body.dart';
 import 'package:shop_app/services/cart_service.dart';
 import 'package:shop_app/services/snackbar_service.dart';
 
@@ -28,7 +26,11 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildSimpleAppBar(context, "Cart",searchbar: false),
+        appBar: buildSimpleAppBar(context, "Cart", searchbar: false,
+            onbackPressed: () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => MainHomeScreen()));
+        }),
         body: FutureBuilder(
           future: CartService().getCartProducts(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -37,24 +39,24 @@ class _OrderScreenState extends State<OrderScreen> {
             }
             cartprods = snapshot.data.cartproducts;
             totalprice = snapshot.data.totalprice;
-            return cartprods.length < 1
+            return cartprods.isEmpty
                 ? Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('No products in cart '),
-                        SizedBox(height: 10),
+                        const Text('No products in cart '),
+                        const SizedBox(height: 10),
                         Container(
                           color: kPrimaryColor,
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: InkWell(
-                            child: Text("Browse Products",
+                            child: const Text("Browse Products",
                                 style: TextStyle(color: Colors.white)),
                             onTap: () {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AllProducts()));
+                                      builder: (context) => const AllProducts()));
                             },
                           ),
                         )
@@ -130,8 +132,8 @@ class _OrderScreenState extends State<OrderScreen> {
                             // );
                           }),
                       ListTile(
-                        title: Text("Total:",style: headingStyle),
-                        trailing: Text("\$$totalprice",style: headingStyle),
+                        title: Text("Total:", style: headingStyle),
+                        trailing: Text("\$$totalprice", style: headingStyle),
                       )
                     ],
                   );
@@ -149,11 +151,11 @@ class _OrderScreenState extends State<OrderScreen> {
                 text: "Checkout",
                 press: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => CheckoutView()));
+                      MaterialPageRoute(builder: (context) => const CheckoutView()));
                 },
               ),
             ),
-            CustomBottomNavBar(
+            const CustomBottomNavBar(
               selectedMenu: MenuState.cart,
             ),
           ],

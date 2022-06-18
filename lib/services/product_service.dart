@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shop_app/model/cart_model.dart';
 import 'package:shop_app/model/product_model.dart';
 import 'package:shop_app/services/api_service.dart';
@@ -7,11 +8,11 @@ class ProductService {
   var dio = createDio();
 
   fetchProductUsingId(String id) async {
-    print("HEHE ${id}");
     try {
       var response =
           await dio.get("product-details/?product_id=${id.toString()}");
       var res = response.data['details'] as List;
+      debugPrint("res $res",wrapWidth: 3000);
       return ProductModel.fromMap(res[0]);
     } catch (er) {
       throw er;
