@@ -65,39 +65,46 @@ class _CheckoutViewState extends State<CheckoutView> {
                         var pr = Provider.of<CheckoutProvider>(context,
                             listen: false);
 
-                        if (_stepIndex == 1) {
-                          //shipping tab
+                        if (_stepIndex == 2) {
+                          //delivery tab
 
                           if (pr.formKey.currentState.validate()) {
+                              try {
+                                if (pr.paymentType == paymentTypeEnum.Stripe) {
+                                 await PaymentService().makePayment(
+                                      amount: "${pr.checkoutData.total}",
+                                      currency: "USD",
+                                      context: context,
+                                    name: pr.shippingDetails['name'],
+                                    country: pr.shippingDetails['country'],
+                                    city: pr.shippingDetails['city'],
+                                    state: pr.shippingDetails['state'],
+                                   address: pr.shippingDetails['address']
+
+                                  );
+                                 await placeOrder();
+                                } else {
+                                  await placeOrder();
+                                }
+                              } catch (Err) {
+                                SnackBarService()
+                                    .showSnackBar(context, Err.toString());
+                              } finally {
+                                setState(() {
+                                  isloading = false;
+                                });
+                              }
+
+                          }
+                        } else if (_stepIndex == 1) {
+                          //payment tab
+                          if(pr.paymentType==paymentTypeEnum.Stripe || pr.paymentType==paymentTypeEnum.COD){
                             details.onStepContinue();
                           }
-                        } else if (_stepIndex == 2) {
-                          //payment tab
-                          try {
-                            if (pr.paymentType == paymentTypeEnum.Stripe) {
-                             await PaymentService().makePayment(
-                                  amount: "${pr.checkoutData.total}",
-                                  currency: "USD",
-                                  context: context,
-                                name: pr.shippingDetails['name'],
-                                country: pr.shippingDetails['country'],
-                                city: pr.shippingDetails['city'],
-                                state: pr.shippingDetails['state'],
-                               address: pr.shippingDetails['address']
-
-                              );
-                             await placeOrder();
-                            } else {
-                              await placeOrder();
-                            }
-                          } catch (Err) {
-                            SnackBarService()
-                                .showSnackBar(context, Err.toString());
-                          } finally {
-                            setState(() {
-                              isloading = false;
-                            });
+                          else{
+                            await placeOrder();
                           }
+
                         } else {
                           details.onStepContinue();
                         }
@@ -111,14 +118,15 @@ class _CheckoutViewState extends State<CheckoutView> {
                   isActive: _stepIndex == 0,
                   title: const Text("Summary"),
                   content: const SummaryCheckoutStep()),
+
               Step(
                   isActive: _stepIndex == 1,
-                  title: const Text("Shipping"),
-                  content:  ShippingCheckoutStep()),
-              Step(
-                  isActive: _stepIndex == 2,
                   title: const Text("Payment"),
                   content: const PaymentCheckoutStep()),
+              Step(
+                  isActive: _stepIndex == 2,
+                  title: const Text("Delivery"),
+                  content:  const ShippingCheckoutStep()),
             ],
           ),
         )
