@@ -19,19 +19,23 @@ class CheckoutService {
 
   placeOrder(cartItems, totalprice, paymentType) async {
     try {
-      // if (paymentType == paymentTypeEnum.COD) {
-      //   paymentType = 'COD';
-      // } else {
-      //   if (paymentType == paymentTypeEnum.Stripe) paymentType = 'Stripe';
-      // }
+      String endPoint='payment-type';
+      if (paymentType == paymentTypeEnum.COD) {
+        paymentType = 'COD';
+      } else {
+        if (paymentType == paymentTypeEnum.Stripe) {
+          paymentType = 'Stripe';
+          endPoint='stripe-pay';
+        }
+      }
       var d = {
         "total_amount": totalprice,
-        "payment_type": "COD",
+        "payment_type": paymentType,
         "data": {"carts": cartItems}
       };
       debugPrint("My fav ${d.toString()}", wrapWidth: 3000);
 
-      var response = await dio.post('payment-type', data: d);
+      var response = await dio.post(endPoint, data: d);
       print("response.data ${response.data}");
       return response.data;
       // return CheckoutModel.fromMap(response.data);
