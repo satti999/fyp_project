@@ -22,12 +22,16 @@ class CheckoutService {
       String endPoint='payment-type';
       if (paymentType == paymentTypeEnum.COD) {
         paymentType = 'COD';
-      } else {
-        if (paymentType == paymentTypeEnum.Stripe) {
+      }
+      else if(paymentType==paymentTypeEnum.COC){
+        paymentType = 'COC';
+
+      }
+      else if (paymentType == paymentTypeEnum.Stripe) {
           paymentType = 'Stripe';
           endPoint='stripe-pay';
         }
-      }
+
       var d = {
         "total_amount": totalprice,
         "payment_type": paymentType,
